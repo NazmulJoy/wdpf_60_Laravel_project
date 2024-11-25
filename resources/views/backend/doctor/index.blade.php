@@ -65,16 +65,18 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Specialist Name</th>
-                                                <th>Details</th>
+                                                <th>Doctor Name</th>
+                                                <th>Specialty</th>
+                                                <th>Email</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Specialist Name</th>
-                                                <th>Details</th>
+                                                <th>Doctor Name</th>
+                                                <th>Specialty</th>
+                                                <th>Email</th>
                                                 <th>Action</th>
                                             </tr>
                                         </tfoot>
@@ -83,13 +85,14 @@
                                             <tr>
                                                 <th>{{$loop->iteration}}</th>
                                                 <th>{{$item->name}}</th>
-                                                <th>{{$item->details}}</th>
+                                                <th>{{$item->specialist->name}}</th>
+                                                <th>{{$item->email}}</th>
                                                 <th style="width: 30%">
                                                     
 
-                                                    <form action="{{route('specialist.destroy',$item->id)}}" method="post">
-                                                        <a href="{{route('specialist.show',$item->id)}}" class="btn btn-success">Show</a>
-                                                    <a href="{{route('specialist.edit',$item->id)}}" class="btn btn-info">Edit</a>
+                                                    <form action="{{route('doctor.destroy',$item->id)}}" method="post">
+                                                        <a href="{{route('doctor.show',$item->id)}}" class="btn btn-success">Show</a>
+                                                    <a href="{{route('doctor.edit',$item->id)}}" class="btn btn-info">Edit</a>
                                                         @csrf
                                                         @method('delete')
                                                         <button class='btn btn-danger' type="submit" name="submit">Delete</button>

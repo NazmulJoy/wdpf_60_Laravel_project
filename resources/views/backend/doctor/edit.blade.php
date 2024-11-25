@@ -43,63 +43,50 @@
             <!-- /Breadcrumb -->
         </div>
         <!-- /Title -->
-    
+        
         <!-- Row -->
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default card-view">
                     <div class="panel-heading">
                         <div class="pull-left">
-                            @if (@session('msg'))
-                                <div class="alert alert-success">{{session('msg')}}</div>
-                            @endif
-                            <h6 class="panel-title txt-dark">Export</h6>
+                            <h6 class="panel-title txt-dark">Edit Specialist Form</h6>
                         </div>
                         <div class="clearfix"></div>
                     </div>
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body">
-                            <div class="table-wrap">
-                                <div class="table-responsive">
-                                    <table id="example" class="table table-hover display  pb-30" >
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Specialist Name</th>
-                                                <th>Details</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Specialist Name</th>
-                                                <th>Details</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody>
-                                            @foreach ($items as $item)
-                                            <tr>
-                                                <th>{{$loop->iteration}}</th>
-                                                <th>{{$item->name}}</th>
-                                                <th>{{$item->details}}</th>
-                                                <th style="width: 30%">
-                                                    
-
-                                                    <form action="{{route('specialist.destroy',$item->id)}}" method="post">
-                                                        <a href="{{route('specialist.show',$item->id)}}" class="btn btn-success">Show</a>
-                                                    <a href="{{route('specialist.edit',$item->id)}}" class="btn btn-info">Edit</a>
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button class='btn btn-danger' type="submit" name="submit">Delete</button>
-                                                    </form>
-
-                                                </th>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div class="form-wrap">
+                                        <form class="form-horizontal" action="{{route('specialist.update',$specialist->id)}}" method="post">
+                                            @csrf
+                                            @method('put')
+                                            <div class="form-group">
+                                                <label for="exampleInputuname_4" class="col-sm-3 control-label">Specialist Name*</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <input type="text" name="specialist" value="{{$specialist->name}}" class="form-control" id="exampleInputuname_4" placeholder="Name of specialist">
+                                                        <div class="input-group-addon"><i class="icon-user"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail_4" class="col-sm-3 control-label">Specialist Details*</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <textarea type="text" name="details" class="form-control" id="exampleInputEmail_4" placeholder="Enter details" rows="10">{{$specialist->details}}</textarea>
+                                                        <div class="input-group-addon"><i class="icon-envelope-open"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <div class="col-sm-offset-3 col-sm-9">
+                                                    <button type="submit" class="btn btn-info ">Update</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
