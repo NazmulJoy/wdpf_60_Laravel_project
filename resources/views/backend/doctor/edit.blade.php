@@ -50,7 +50,7 @@
                 <div class="panel panel-default card-view">
                     <div class="panel-heading">
                         <div class="pull-left">
-                            <h6 class="panel-title txt-dark">Edit Specialist Form</h6>
+                            <h6 class="panel-title txt-dark">Edit Doctor Form</h6>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -59,26 +59,77 @@
                             <div class="row">
                                 <div class="col-sm-12 col-xs-12">
                                     <div class="form-wrap">
-                                        <form class="form-horizontal" action="{{route('specialist.update',$specialist->id)}}" method="post">
+                                        <form class="form-horizontal" action="{{route('doctor.update',$doctor->id)}}" method="post" enctype="multipart/form-data">
                                             @csrf
-                                            @method('put')
+                                            @method('PUT')
                                             <div class="form-group">
-                                                <label for="exampleInputuname_4" class="col-sm-3 control-label">Specialist Name*</label>
+                                                <label for="exampleInputuname_4" class="col-sm-3 control-label">Doctor Name*</label>
                                                 <div class="col-sm-9">
                                                     <div class="input-group">
-                                                        <input type="text" name="specialist" value="{{$specialist->name}}" class="form-control" id="exampleInputuname_4" placeholder="Name of specialist">
+                                                        <input type="text" name="name" value="{{old('name')??$doctor->name}}" class="form-control" id="exampleInputuname_4" placeholder="Name of doctor">
                                                         <div class="input-group-addon"><i class="icon-user"></i></div>
                                                     </div>
+                                                    @error('name')
+                                                        <div class="alert alert-danger">{{$message}}</div>
+                                                        @enderror
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleInputEmail_4" class="col-sm-3 control-label">Specialist Details*</label>
+                                                <label for="exampleInputuname_4" class="col-sm-3 control-label">Specialist*</label>
+                                                <div class="col-sm-9">
+                                                    
+                                                        <select name="specialist" class="form-control" id="">
+                                                            <option value="">Select one</option>
+                                                            @foreach ($specialists as $item)
+                                                            <option value="{{$item->id}}" @selected(old('specialist')??$doctor->specialist_id == $item->id) >{{$item->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('specialist')
+                                                        <div class="alert alert-danger">{{$message}}</div>
+                                                        @enderror
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail_4" class="col-sm-3 control-label">Doctor Email*</label>
                                                 <div class="col-sm-9">
                                                     <div class="input-group">
-                                                        <textarea type="text" name="details" class="form-control" id="exampleInputEmail_4" placeholder="Enter details" rows="10">{{$specialist->details}}</textarea>
-                                                        <div class="input-group-addon"><i class="icon-envelope-open"></i></div>
+                                                        <input type="email" name="email" value="{{old('email')??$doctor->email}}" class="form-control" id="exampleInputuname_4" placeholder="Email of doctor">
+                                                        
+                                                        <div class="input-group-addon"><i class="icon-envelope"></i></div>
+                                                    </div>
+                                                    @error('email')
+                                                        <div class="alert alert-danger">{{$message}}</div>
+                                                        @enderror
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail_4" class="col-sm-3 control-label">Photo*</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <input type="file" name="photo" class="form-control" id="exampleInputuname_4" placeholder="Photo of doctor">
+                                                        <div class="input-group-addon"><i class="icon-picture"></i></div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="exampleInputEmail_4" class="col-sm-3 control-label">Status*</label>
+                                                <div class="col-sm-9">
+                                                <div class="radio radio-info">
+                                                    <input type="radio" name="status" id="radio1" value="active" @if(old('status')=='active') checked @elseif($doctor->status == 'active')checked @endif >
+                                                    <label for="radio1">
+                                                        Active
+                                                    </label>
+                                                </div>
+                                                <div class="radio radio-info">
+                                                    <input type="radio" name="status" id="radio2" value="inactive" @if(old('status')=='inactive') checked @elseif($doctor->status == 'inactive')checked @endif>
+                                                    <label for="radio2">
+                                                        Inactive
+                                                    </label>
+                                                    @error('status')
+                                                        <div class="alert alert-danger">{{$message}}</div>
+                                                        @enderror
+                                                </div>
+                                            </div>	
                                             </div>
                                             <div class="form-group mb-0">
                                                 <div class="col-sm-offset-3 col-sm-9">

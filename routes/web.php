@@ -17,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.home');
 });
-
+Route::get('/about', function () {
+    return view('frontend.about');
+});
 // Route::get('/admin/dashboard', function () {
 //     return view('backend.admin_dashboard');
 // })->middleware(['auth:admin', 'verified'])->name('admin_dashboard');
@@ -51,7 +53,8 @@ Route::middleware('auth:admin')->prefix('admin')->group( function () {
 
     Route::view('/dashboard','backend.admin_dashboard');
     Route::resource('/specialist',SpecialistController::class);
-    Route::resource('/doctor',DoctorController::class);
+    Route::resource('/doctor',DoctorController
+    ::class);
 
 });
 Route::middleware('guest:doctor')->prefix('doctor')->group( function () {

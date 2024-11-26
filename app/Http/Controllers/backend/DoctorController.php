@@ -33,16 +33,24 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
         $request->validate(
-            ['name'=>'required | max:100', 'specialist'=>'required', 'email'=>'required | max:50', 'password'=>'required | min:8 | confirmed','photo'=>'required | max:2048', 'status'=>'required']
+            ['name'=>'required | max:100', 'specialist'=>'required', 'email'=>'required | email | max:50', 'password'=>'required | min:8 | confirmed','photo'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048', 'status'=>'required']
 
         );
+        if ($image = $request->file('photo')) {
+            $destinationPath = 'images/';
+            $postImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $postImage);
+            $photo = "$destinationPath$postImage";
+        }else {
+            $photo = 'images/nophoto.jpg';
+        }
 
         $doctor = new Doctor;
         $doctor->Name = $request->name;
         $doctor->specialist_id = $request->specialist;
         $doctor->email = $request->email;
         $doctor->password = bcrypt($request->password);
-        $doctor->photo = $request->photo;
+        $doctor->photo = $photo;
         $doctor->status = $request->status;
         $doctor->save();
         return redirect()->route('doctor.index')->with('msg','Succesfully created');
@@ -51,7 +59,7 @@ class DoctorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Doctor $doctor)
     {
         return view('backend.doctor.show', compact('doctor'));
     }
@@ -59,17 +67,37 @@ class DoctorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Doctor $doctor)
     {
-        //
+        $specialists = Specialist::all(); 
+        return view('backend.doctor.edit', compact('doctor','specialists'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Doctor $doctor)
     {
-        //
+        $request->validate(
+            ['name'=>'required | max:100', 'specialist'=>'required', 'email'=>'required | email | max:50','photo'=>'max:2048', 'status'=>'required']
+
+        );
+        if ($image = $request->file('photo')) {
+            $destinationPath = 'images/';
+            $postImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $postImage);
+            $photo = "$destinationPath$postImage";
+        }else {
+            $photo = $doctor->photo;
+        }
+        $doctor->Name = $request->name;
+        $doctor->specialist_id = $request->specialist;
+        $doctor->email = $request->email;
+        $doctor->password = $doctor->password;
+        $doctor->photo = $photo;
+        $doctor->status = $request->status;
+        $doctor->update();
+        return redirect()->route('doctor.index')->with('msg','Succesfully updated');
     }
 
     /**
@@ -77,6 +105,8 @@ class DoctorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $doctor = new Doctor;
+        $doctor::find($id)->delete();
+        return redirect()->route('doctor.index')->with('msg','Succesfully deleted');
     }
 }

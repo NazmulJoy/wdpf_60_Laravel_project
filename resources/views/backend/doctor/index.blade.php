@@ -95,7 +95,7 @@
                                                     <a href="{{route('doctor.edit',$item->id)}}" class="btn btn-info">Edit</a>
                                                         @csrf
                                                         @method('delete')
-                                                        <button class='btn btn-danger' type="submit" name="submit">Delete</button>
+                                                        <button class='btn btn-danger' onclick="return confirm('Are you sure to delete?')" type="submit" name="submit">Delete</button>
                                                     </form>
 
                                                 </th>

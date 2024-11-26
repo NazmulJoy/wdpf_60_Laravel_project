@@ -54,17 +54,16 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Specialist Name</th>
-                                                <th>Details</th>
+                                                <th>Doctor Name</th>
+                                                <th>Photo</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                            
                                             <tr>
-                                                <th>{{$specialist->id}}</th>
-                                                <th>{{$specialist->name}}</th>
-                                                <th>{{$specialist->details}}</th>
-                                               
+                                                <th>{{$doctor->id}}</th>
+                                                <th>{{$doctor->name}}</th>
+                                               <th><img src="{{asset($doctor->photo)}}" alt=""></th>
                                             </tr>
                                            
                                         </tbody>
