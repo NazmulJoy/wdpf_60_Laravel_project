@@ -31,7 +31,25 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'doctor' => 'required',
+            'date' => 'required',
+            'remarks' => 'max:250 | min:10',
+        ]);
+        $app = new Appointment;
+        $app->name = $request->name;
+        $app->email = $request->email;
+        $app->phone = $request->phone;
+        $app->date = $request->date;
+        $app->doctor_id = $request->doctor;
+        $app->remarks = $request->remarks;
+        $app->save();
+
+        return redirect()->back()->with('msg','Appointment placed');
+
     }
 
     /**
