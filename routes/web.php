@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\backend\AppointmentController as BackendAppointmentController;
+use App\Http\Controllers\backend\DepartmentController;
 use App\Http\Controllers\backend\DoctorController;
 use App\Http\Controllers\backend\SpecialistController;
 use App\Http\Controllers\frontend\AppointmentController;
@@ -22,12 +24,12 @@ use Illuminate\Support\Facades\Route;
 //     return view('frontend.home');
 // });
 
-Route::get('/', [HomeController::class,'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/about', 'frontend.about')->name('about');
 
 
-Route::get('/appointment', [AppointmentController::class,'create'])->name('appointment.create');
-Route::post('/appointment', [AppointmentController::class,'store'])->name('appointment.store');
+Route::get('/appointment', [AppointmentController::class, 'create'])->name('frontappointment.create');
+Route::post('/appointment', [AppointmentController::class, 'store'])->name('frontappointment.store');
 
 // Route::get('/admin/dashboard', function () {
 //     return view('backend.admin_dashboard');
@@ -43,8 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
-Route::middleware('guest:admin')->prefix('admin')->group( function () {
+require __DIR__ . '/auth.php';
+Route::middleware('guest:admin')->prefix('admin')->group(function () {
 
     Route::get('login', [App\Http\Controllers\Auth\Admin\LoginController::class, 'login'])->name('admin.login');
     Route::post('login', [App\Http\Controllers\Auth\Admin\LoginController::class, 'check_user']);
@@ -54,17 +56,18 @@ Route::middleware('guest:admin')->prefix('admin')->group( function () {
 
 });
 
-Route::middleware('auth:admin')->prefix('admin')->group( function () {
+Route::middleware('auth:admin')->prefix('admin')->group(function () {
 
     Route::post('logout', [App\Http\Controllers\Auth\Admin\LoginController::class, 'logout'])->name('admin.logout');
 
-    Route::view('/dashboard','backend.admin_dashboard');
-    Route::resource('/specialist',SpecialistController::class);
-    Route::resource('/doctor',DoctorController
-    ::class);
-
+    Route::view('/dashboard', 'backend.admin_dashboard');
+    Route::resource('/specialist', SpecialistController::class);
+    Route::resource('/doctor', DoctorController::class);
+    Route::resource('/appointment', BackendAppointmentController::class);
+    Route::get('/appointment/status/{id}', [BackendAppointmentController::class,'changeStatus'])->name('appointment.changeStatus');
+    Route::resource('/department', DepartmentController::class);
 });
-Route::middleware('guest:doctor')->prefix('doctor')->group( function () {
+Route::middleware('guest:doctor')->prefix('doctor')->group(function () {
 
     Route::get('login', [App\Http\Controllers\Auth\Doctor\loginController::class, 'login'])->name('doctor.login');
     Route::post('login', [App\Http\Controllers\Auth\Doctor\loginController::class, 'check_user']);
@@ -74,10 +77,9 @@ Route::middleware('guest:doctor')->prefix('doctor')->group( function () {
 
 });
 
-Route::middleware('auth:doctor')->prefix('doctor')->group( function () {
+Route::middleware('auth:doctor')->prefix('doctor')->group(function () {
 
     Route::post('logout', [App\Http\Controllers\Auth\Doctor\loginController::class, 'logout'])->name('doctor.logout');
 
-    Route::view('/dashboard','backend.doctor_dashboard');
-
+    Route::view('/dashboard', 'backend.doctor_dashboard');
 });

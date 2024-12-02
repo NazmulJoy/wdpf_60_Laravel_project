@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\Specialist::factory(10)->create();
 
         \App\Models\Admin::create([
             'name' => 'Admin',
@@ -24,7 +24,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'Doctor',
             'email' => 'nazmuljoys@gmail.com',
             'password' => Hash::make('admin123'),
-            'specialist_id' => '1'
+            'specialist_id' => '1',
+            'photo' =>'images/nophoto.jpg',
+            'status' => 'active'
         ]);
        
 
