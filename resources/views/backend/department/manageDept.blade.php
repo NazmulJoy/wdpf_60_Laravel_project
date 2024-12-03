@@ -22,6 +22,29 @@
 <script src="{{asset('dist/js/jquery.slimscroll.js')}}"></script>
 <script src="{{asset('dist/js/dropdown-bootstrap-extended.js')}}"></script>
 <script src="{{asset('dist/js/init.js')}}"></script>
+
+<script>
+    $(document).ready(function(){
+        $('#btnAdd').click(function(e){
+            e.preventDefault();
+            alert('Add button clicked');
+            let mydata = $('#deptForm').serialize();
+
+           
+            $.ajax({url: "{{route('department.store')}}",
+            type: 'POST',
+            data:(
+                "_token": "{{csrf_token()}}",
+                "data": mydata
+            )
+            , success: function(result){
+                alert(result);
+                // $("#div1").html(result);
+            }});
+
+        })
+    })
+</script>
 @endsection
 @section('content')
     <h1>All Specialist</h1>
@@ -53,7 +76,7 @@
                             @if (@session('msg'))
                                 <div class="alert alert-success">{{session('msg')}}</div>
                             @endif
-                            <h6 class="panel-title txt-dark">Export</h6>
+                            
                         </div> <br>
 
                         <div><button class="alert alert-info" data-toggle="modal" data-target="#responsive-modal">Add Department</button></div>
@@ -119,28 +142,28 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                        <h5 class="modal-title">Modal Content is Responsive</h5>
+                                        <h5 class="modal-title">Department Form</h5>
                                     </div>
                                     <div class="modal-body">
-                                        <form>
+                                        <form id="deptForm">
                                             <div class="form-group">
-                                                <label for="recipient-name" class="control-label mb-10">Recipient:</label>
-                                                <input type="text" class="form-control" id="recipient-name">
+                                                <label for="recipient-name" class="control-label mb-10">Department Name:</label>
+                                                <input type="text" class="form-control" id="recipient-name" name="name">
                                             </div>
                                             <div class="form-group">
-                                                <label for="message-text" class="control-label mb-10">Message:</label>
-                                                <textarea class="form-control" id="message-text"></textarea>
+                                                <label for="message-text" class="control-label mb-10">Details:</label>
+                                                <textarea class="form-control" id="message-text" name="details"></textarea>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-danger">Save changes</button>
+                                        <button type="button" id="btnAdd" class="btn btn-danger">Add</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Button trigger modal -->
-                    
+                       
 @endsection
